@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: b9b6db66ca9360448a288d32a6a18f6a
+timeCreated: 1478273725
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - prefabblue: {fileID: 54000014137406488, guid: b374c32e00a9cf944b8b2e2e16357d12,
+      type: 2}
+  - prefabgreen: {fileID: 54000013648656418, guid: 57f011f1c4e96b444856ec407b733ded,
+      type: 2}
+  - prefabyellow: {fileID: 54000014272609926, guid: a44b6f23dfaf5f34ea60d8e06d03b13b,
+      type: 2}
+  - prefabred: {fileID: 54000012315125028, guid: 03f68259aa750a548bdb9961e1c9bf53,
+      type: 2}
+  - rainbow: {fileID: 54000012053875402, guid: c72351efa80de8542a3690e93b0f4254, type: 2}
+  - explosionblue: {fileID: 1000013140340016, guid: 6937b67ed869bcd48b68e3d322ca46cd,
+      type: 2}
+  - explosiongreen: {fileID: 1000013140340016, guid: 80a0c522e419a744d859c0a4df3b6051,
+      type: 2}
+  - explosionyellow: {fileID: 1000013140340016, guid: d0c53d72e4ff1b242a07069c4143a0c9,
+      type: 2}
+  - explosionred: {fileID: 1000013140340016, guid: 818b1fb1104b12a4280da2da5dc42293,
+      type: 2}
+  - enemy: {instanceID: 0}
+  - enemylight: {instanceID: 0}
+  - oldenemy: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
