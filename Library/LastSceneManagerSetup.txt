@@ -1,0 +1,13 @@
+sceneSetups:
+- path: Assets/Scenes/Shop.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/MyBalls.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Game.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Menu.unity
+  isLoaded: 1
+  isActive: 1
