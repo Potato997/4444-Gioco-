@@ -8,3 +8,5 @@ Semplice gioco arcade utilizzando i prefab stock di Unity
 Il codice sono nella directory /Assets/Codici
 
 Nel caso volete replicare il progetto, totalmente o in parte, vi chiedo di menzionare me e il mio lavoro essendo un progetto a cui ho speso molte ore di lavoro e impegno
+
+Presto caricherò un video demo di dimostrazione
