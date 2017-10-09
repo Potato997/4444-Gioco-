@@ -1,5 +1,5 @@
 # Lin Jie
-Tutti i file del mio progetto di 5° aggiornati al 06/06/2017
+Tutti i file del mio progetto del 5° anno, aggiornati al 06/06/2017
 
 Il progetto è stato creato con Unity Engine, l'IDE è Visual Studio e il linguaggio di programmazione è C#
 
@@ -9,4 +9,4 @@ Il codice sono nella directory /Assets/Codici
 
 Nel caso volete replicare il progetto, totalmente o in parte, vi chiedo di menzionare me e il mio lavoro essendo un progetto a cui ho speso molte ore di lavoro e impegno
 
-Presto caricherò un video demo di dimostrazione
+Video dimostrativo: https://youtu.be/UMjm4uBdmqQ
