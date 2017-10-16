@@ -11,7 +11,8 @@ Nel caso volete replicare il progetto, totalmente o in parte, vi chiedo di menzi
 
 Video dimostrativo: https://youtu.be/UMjm4uBdmqQ
 
-#ENGLISH
+# ENGLISH
+
 A little arcade game made in Unity 3D for my fifth year of highschool
 Using Unity Engine and C# in Visual Studio
 The code is in /Assets/Codici
