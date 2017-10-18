@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ public class Shop : MonoBehaviour{
     
     public Text Currency;
     public List<string> textures;
+    private List<string> tempOwned = new List<string> { };
     private Vector3 pos = new Vector3(0, 0, 0);
     public GameObject ball;
     private int i, x;
@@ -22,6 +23,7 @@ public class Shop : MonoBehaviour{
     private int rt_x;
 
     private int coins;
+    
 
     void Start () {
         //File.Delete(Application.persistentDataPath + "/save.potato");
@@ -40,16 +42,16 @@ public class Shop : MonoBehaviour{
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Open, FileAccess.ReadWrite);
             Save save = (Save)bf.Deserialize(file);
-            file.Close();
             textures = new List<string>(save.texture);
+            tempOwned = new List<string>(save.owned);
+            file.Close();
         }
         else
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create, FileAccess.ReadWrite);
             Save save = new Save();
-            save.owned = new List<string>();
-            save.owned.Add("ball_01");
+            save.owned = new List<string>{"ball_01"};
             save.texture = new List<string>();
             Object[] loadtex = Resources.LoadAll("BallsTexture");
             Debug.Log(loadtex.Length);
@@ -63,8 +65,11 @@ public class Shop : MonoBehaviour{
             bf.Serialize(file, save);
             file.Close();
         }
+        
 
-        foreach(string s in textures)
+        Debug.Log(textures.Count);
+
+        foreach (string s in textures)
         {
             rt_x -= 160;
             rt.sizeDelta = new Vector2(rt_x, 0);
@@ -95,7 +100,23 @@ public class Shop : MonoBehaviour{
 
     public void Menu()
     {
-        SceneManager.LoadScene(0);
+        try
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create);
+            Save save = new Save();
+            save.owned = tempOwned;
+            save.texture = textures;
+            bf.Serialize(file, save);
+            file.Close();
+            SceneManager.LoadScene(0);
+        }
+        catch(System.Runtime.Serialization.SerializationException e)
+        {
+            Debug.Log(e);
+        }
+        Debug.Log("Saved");
+        
     }
 
     public void TryBuy()
@@ -112,27 +133,14 @@ public class Shop : MonoBehaviour{
         {
             if (coins >= 100)
             {
-                FileStream sfile = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Open, FileAccess.ReadWrite);
-                BinaryFormatter formatter = new BinaryFormatter();
-                Save sav = (Save)formatter.Deserialize(sfile);
-                List<string> ttexture = new List<string>(sav.texture);
-                List<string> towned = new List<string>(sav.owned);
-                sfile.Close();
-
-                ttexture.Remove(name);
-                towned.Add(name);
-
-                FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create, FileAccess.ReadWrite);
-                BinaryFormatter bf = new BinaryFormatter();
-                Save save = new Save();
-                save.owned = new List<string>(towned);
-                save.texture = new List<string>(ttexture);
-                bf.Serialize(file, save);
-                file.Close();
+                Debug.Log(name);
+                textures.Remove(name);
+                tempOwned.Add(name);
+                
                 TryBuyPanel.SetActive(false);
                 PlayerPrefs.SetString("Skin", name);
                 coins -= 100;
-                Debug.Log("Buy - coins " + name);
+                Debug.Log("Buy: " + name);
                 PlayerPrefs.SetInt("Coins", coins);
                 Currency.text = "Coins: " + coins;
                 Button[] bt = FindObjectsOfType<Button>();
@@ -163,5 +171,4 @@ public class Shop : MonoBehaviour{
         PlayerPrefs.SetInt("Coins", coins);
         Currency.text = "Coins: " + coins;
     }
-    
 }
