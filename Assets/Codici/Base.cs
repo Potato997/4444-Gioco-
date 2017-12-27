@@ -27,7 +27,7 @@ public class Base : MonoBehaviour {
         else
         {
             x = 3f;
-            cost = 100;
+            cost = 200;
         }
 
         audio = GetComponent<AudioSource>();
