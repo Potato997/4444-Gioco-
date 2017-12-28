@@ -30,17 +30,21 @@ public class Shop : MonoBehaviour{
     public GameObject row;
     public Sprite success;
 
-    private int index;
+    string toastString;
+    AndroidJavaObject currentActivity;
 
 
     void Start () {
-        //File.Delete(Application.persistentDataPath + "/save.potato");
-        index = 0;
         coins = PlayerPrefs.GetInt("Coins");
         Currency.text = "Coins: " + coins;
         LoadSkin();
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) { Menu(); }
+    }
+
     public void LoadSkin()
     {
         if (File.Exists(Application.persistentDataPath + "/save.potato"))
@@ -75,9 +79,11 @@ public class Shop : MonoBehaviour{
             Debug.Log("New data");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create, FileAccess.ReadWrite);
-            Save save = new Save();
-            save.owned = new List<string>{"ball_01"};
-            save.texture = new List<string>();
+            Save save = new Save
+            {
+                owned = new List<string> { "ball_01" },
+                texture = new List<string>()
+            };
             Texture[] textures = Resources.LoadAll<Texture>("BallsTexture");
             Debug.Log(textures.Length);
             container.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2((textures.Length * 200) + 200, 0);
@@ -108,12 +114,13 @@ public class Shop : MonoBehaviour{
 
     public void test(string name)
     {
-        Debug.Log("Buy " + name);
+
+        string t = EventSystem.current.currentSelectedGameObject.name;
 
         TryBuyPanel.SetActive(true);
         TryBuyButton.GetComponent<Button>().onClick.RemoveAllListeners();
         Debug.Log(EventSystem.current.currentSelectedGameObject.name);
-        TryBuyButton.GetComponent<Button>().onClick.AddListener(() => BuyTex(name, EventSystem.current.currentSelectedGameObject.name));
+        TryBuyButton.GetComponent<Button>().onClick.AddListener(() => BuyTex(name, t));
     }
 
     public void BuyTex(string name, string n)
@@ -132,24 +139,16 @@ public class Shop : MonoBehaviour{
                 Debug.Log("Buyed: " + name);
                 PlayerPrefs.SetInt("Coins", coins);
                 Currency.text = "Coins: " + coins;
+                
+                GameObject btnDis = GameObject.Find(n);
+                
+                btnDis.gameObject.SetActive(false);
 
-                Debug.Log(index);
-                Transform transformBtn = container.gameObject.transform.GetChild(index);
-                /*
-                 * TODO
-                 * DISABLE BUTTON WHEN BUYED
-                GameObject go = GameObject.Find(n);
-
-                Button btn = go.GetComponentInChildren<Button>();
-
-                btn.onClick.RemoveAllListeners();
-
-                btn.GetComponentInChildren<Image>().sprite = success;
-                */
+                Toast(n);
             }
             else
             {
-                Debug.Log("Not enough money");
+                Toast("Not enough money");
             }
         }
     }
@@ -167,9 +166,11 @@ public class Shop : MonoBehaviour{
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create);
-            Save save = new Save();
-            save.owned = tempOwned;
-            save.texture = textures;
+            Save save = new Save
+            {
+                owned = tempOwned,
+                texture = textures
+            };
             bf.Serialize(file, save);
             file.Close();
             SceneManager.LoadScene(0);
@@ -180,6 +181,34 @@ public class Shop : MonoBehaviour{
         }
         Debug.Log("Saved");
         
+    }
+
+    public void Toast(string name)
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            showToastOnUiThread("It Worked!");
+        }
+    }
+
+    void showToastOnUiThread(string toastString)
+    {
+        AndroidJavaClass UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+
+        currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        this.toastString = toastString;
+
+        currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(showToast));
+    }
+
+    void showToast()
+    {
+        Debug.Log("Running on UI thread");
+        AndroidJavaObject context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
+        AndroidJavaClass Toast = new AndroidJavaClass("android.widget.Toast");
+        AndroidJavaObject javaString = new AndroidJavaObject("java.lang.String", toastString);
+        AndroidJavaObject toast = Toast.CallStatic<AndroidJavaObject>("makeText", context, javaString, Toast.GetStatic<int>("LENGTH_SHORT"));
+        toast.Call("show");
     }
 
     public void Cancel()

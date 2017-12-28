@@ -1,0 +1,27 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="Menu">
+			<method name="MyBalls"/>
+			<method name="StartGame"/>
+			<method name="Shop"/>
+		</type>
+		<type fullname="GameManager">
+			<method name="Resume"/>
+			<method name="Mainmenu"/>
+			<method name="Restart"/>
+			<method name="Pause"/>
+			<method name="Mainmenu"/>
+			<method name="Restart"/>
+		</type>
+		<type fullname="Shop">
+			<method name="Menu"/>
+			<method name="deleteData"/>
+			<method name="Cancel"/>
+			<method name="BuyTex"/>
+			<method name="AddMoney"/>
+		</type>
+		<type fullname="MyBalls">
+			<method name="Menu"/>
+		</type>
+	</assembly>
+</linker>

@@ -20,7 +20,10 @@ public class MyBalls : MonoBehaviour {
     private string texname;
     public Sprite SettedBtnSkin;
     public Sprite NormalBtnSkin;
-    public RectTransform rt;
+    
+    public Transform container;
+    public GameObject row;
+
     #endregion
 
     void Start () {
@@ -34,38 +37,24 @@ public class MyBalls : MonoBehaviour {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Open, FileAccess.ReadWrite);
         Save save = (Save)bf.Deserialize(file);
+        textures = new List<string>(save.texture);
         file.Close();
-        textures = new List<string>(save.owned);
 
-        foreach(string s in textures)
-        {
-
-            rt_x += 180;
-            rt.sizeDelta = new Vector2(rt_x, 0);
-        }
-
+        container.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2((textures.Count * 200) + 200, 0);
         foreach (string str in textures)
         {
-            GetPos();
-            GameObject instance = Instantiate(ball, pos, transform.rotation) as GameObject;
-            instance.transform.SetParent(Scrollrect.transform);
-            instance.transform.localScale = new Vector3(100, 100, 100);
-            instance.GetComponent<Renderer>().material.mainTexture = Resources.Load("BallsTexture/" + str) as Texture;
-            instance.name = "ball " + str;
-            GameObject BtnInst = Instantiate(SetBtn, pos, transform.rotation) as GameObject;
-            BtnInst.transform.SetParent(Scrollrect.transform);
-            BtnInst.name = str;
-            BtnInst.transform.position = new Vector3(x, -500, 400);
-            BtnInst.GetComponent<Button>().onClick.AddListener(() => SetSkin());
-            //CHANGE BUTTON TO SETTED OF THE SKIN ALREADY SETTED
-            /*if (str == PlayerPrefs.GetString("Skin"))
-            {
-                BtnInst.GetComponent<Button>().image.sprite = SettedBtnSkin;
-                BtnInst.GetComponent<Button>().GetComponentInChildren<Text>().text = "";
-                BtnInst.GetComponent<Button>().image.rectTransform.sizeDelta = new Vector2(100, 100);
-                BtnInst.GetComponent<Button>().interactable = false;
-            }*/
-            i++;
+            GameObject r = Instantiate(row) as GameObject;
+            r.transform.SetParent(container);
+
+            Transform transformBtn = r.gameObject.transform.GetChild(0);
+
+            Button btn = transformBtn.GetComponentInChildren<Button>();
+            btn.name = str;
+            btn.onClick.AddListener(() => SetSkin(str));
+
+            Transform b = r.gameObject.transform.GetChild(1);
+            b.GetComponent<Renderer>().material.mainTexture = Resources.Load("BallsTexture/" + str) as Texture;
+
         }
     }
 
@@ -75,9 +64,9 @@ public class MyBalls : MonoBehaviour {
         pos = new Vector3(x, 0, 400);
     }
 
-    public void SetSkin()
+    public void SetSkin(string n)
     {
-        if (texname != null)
+        if (n != null)
         {
             CurrentBtn.GetComponent<Button>().image.sprite = NormalBtnSkin;
             CurrentBtn.GetComponent<Button>().GetComponentInChildren<Text>().text = "Set Skin!";
@@ -85,8 +74,8 @@ public class MyBalls : MonoBehaviour {
             CurrentBtn.GetComponent<Button>().interactable = true;
         }
         CurrentBtn = EventSystem.current.currentSelectedGameObject;
-        texname = CurrentBtn.name;
-        PlayerPrefs.SetString("Skin", texname);
+        n = CurrentBtn.name;
+        PlayerPrefs.SetString("Skin", n);
         CurrentBtn.GetComponent<Button>().image.sprite = SettedBtnSkin;
         CurrentBtn.GetComponent<Button>().GetComponentInChildren<Text>().text = "";
         CurrentBtn.GetComponent<Button>().image.rectTransform.sizeDelta = new Vector2(100, 100);
