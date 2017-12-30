@@ -283,6 +283,12 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Jie/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="ChannelPurchase">
+      <HintPath>C:/Users/Jie/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.xiaomi@1.0.0/UnityChannel/ChannelPurchase.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityStore">
+      <HintPath>C:/Users/Jie/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.xiaomi@1.0.0/UnityChannel/UnityStore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Codici\Base.cs" />
@@ -297,6 +303,7 @@
     <Compile Include="Assets\Codici\Shop.cs" />
     <Compile Include="Assets\Codici\Slowball.cs" />
     <Compile Include="Assets\Codici\Tasto.cs" />
+    <Compile Include="Packages\com.unity.xiaomi@1.0.0\UnityChannel\XiaomiSupport\AppStoreSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Materials\Blur.shader" />

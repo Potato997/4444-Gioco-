@@ -10,7 +10,7 @@ public class Shop : MonoBehaviour{
     
     public Text Currency;
     public List<string> textures;
-    private List<string> tempOwned = new List<string> { };
+    private List<string> tempOwned = new List<string>();
     public GameObject ball;
     private int i, x;
     public GameObject Scrollrect;
@@ -57,6 +57,9 @@ public class Shop : MonoBehaviour{
             tempOwned = new List<string>(save.owned);
             file.Close();
 
+            Debug.Log("Textures: " + textures.Count);
+            Debug.Log("Owned: " + tempOwned.Count);
+
             container.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2((textures.Count * 200) + 200, 0);
             foreach (string str in textures)
             {
@@ -84,11 +87,11 @@ public class Shop : MonoBehaviour{
                 owned = new List<string> { "ball_01" },
                 texture = new List<string>()
             };
-            Texture[] textures = Resources.LoadAll<Texture>("BallsTexture");
-            Debug.Log(textures.Length);
-            container.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2((textures.Length * 200) + 200, 0);
+            Texture[] texs = Resources.LoadAll<Texture>("BallsTexture");
+            Debug.Log(texs.Length);
+            container.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2((texs.Length * 200) + 200, 0);
 
-            foreach (Texture t in textures)
+            foreach (Texture t in texs)
             {
                 save.texture.Add(t.name);
                 GameObject r = Instantiate(row) as GameObject;
@@ -107,6 +110,7 @@ public class Shop : MonoBehaviour{
             }
 
             save.texture.Remove("ball_01");
+            textures = new List<string>(save.texture);
             bf.Serialize(file, save);
             file.Close();
         }
@@ -168,9 +172,11 @@ public class Shop : MonoBehaviour{
             FileStream file = new FileStream(Application.persistentDataPath + "/save.potato", FileMode.Create);
             Save save = new Save
             {
-                owned = tempOwned,
-                texture = textures
+                owned = new List<string> (tempOwned),
+                texture = new List<string> (textures)
+
             };
+
             bf.Serialize(file, save);
             file.Close();
             SceneManager.LoadScene(0);
@@ -183,11 +189,11 @@ public class Shop : MonoBehaviour{
         
     }
 
-    public void Toast(string name)
+    public void Toast(string msg)
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            showToastOnUiThread("It Worked!");
+            showToastOnUiThread(msg);
         }
     }
 
