@@ -93,13 +93,13 @@ public class GameManager : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && wrong == false && GameObject.FindGameObjectWithTag("Base") && Time.timeScale > 0f)
             Distruggi();
 
-        /*if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            Distruggi2();
-        }*/
+            MouseDestroy();
+        }
     }
 
-    public void Distruggi2()
+    public void MouseDestroy()
     {
         Ray raggio = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit colpo;
@@ -230,10 +230,12 @@ public class GameManager : MonoBehaviour
             case 20:
                 vartimer = 0.35f;
                 break;
+            case 50:
+                special = true;
+                break;
             case 60:
                 deltaspeed = 0.025f;
                 vartimer = 0.45f;
-                special = true;
                 break;
             case 100:
                 deltaspeed = 0.01f;

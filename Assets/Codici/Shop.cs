@@ -11,24 +11,15 @@ public class Shop : MonoBehaviour{
     public Text Currency;
     public List<string> textures;
     private List<string> tempOwned = new List<string>();
-    public GameObject ball;
-    private int i, x;
-    public GameObject Scrollrect;
-    public GameObject BuyBtn;
     public GameObject TryBuyPanel;
-    GameObject BtnInstance;
     public Button TryBuyButton;
-    public RectTransform rt;
-    private int rt_x;
 
     private int coins;
-
 
     public Transform ballContainer;
     public Transform btnContainer;
     public Transform container;
     public GameObject row;
-    public Sprite success;
 
     string toastString;
     AndroidJavaObject currentActivity;
@@ -179,13 +170,13 @@ public class Shop : MonoBehaviour{
 
             bf.Serialize(file, save);
             file.Close();
+            Debug.Log("Saved");
             SceneManager.LoadScene(0);
         }
         catch(System.Runtime.Serialization.SerializationException e)
         {
             Debug.Log(e);
         }
-        Debug.Log("Saved");
         
     }
 
@@ -193,12 +184,14 @@ public class Shop : MonoBehaviour{
     {
         if (Application.platform == RuntimePlatform.Android)
         {
+            Debug.Log("Is android");
             showToastOnUiThread(msg);
         }
     }
 
     void showToastOnUiThread(string toastString)
     {
+        Debug.Log("Toast content: " + toastString);
         AndroidJavaClass UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 
         currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
